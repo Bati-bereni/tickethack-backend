@@ -5,22 +5,26 @@ require("../models/connection"); //import, initialisation connection
 const Trip = require("../models/trips"); //import du modèle
 // autant que de models/schemas
 
-// /* GET home page. */
-// // router.get('/', function(req, res, next) {
-// //   res.render('index', { title: 'Express' });
-// // });
+//GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
 
-// function getAllTrips() {
-//   Trip.find().then((data) => {
-//     console.log(data);
-//   });
-// }
 
-// router.get("/getAllTrips", (req, res) => {
-//   Trip.find().then((data) => {
-//     res.json({ allTrips: data });
-//   });
-// });
+
+router.get("/getAllTrips", (req, res) => {
+  Trip.find().then((data) => {
+    res.json({ allTrips: data });
+  });
+});
+
+
+
+router.post("/nom", (req, res) => {
+  const reformatageNom = req.body.nom[0].toUpperCase() + req.body.nom.slice(1).toLowerCase();
+  const reformatagePrenom = req.body.prenom[0].toUpperCase() + req.body.prenom.slice(1).toLowerCase();
+
+res.json({ name: reformatageNom, firstName: reformatagePrenom });
 
 // router.post("/getOneTrip", (req, res) => {
 //   // console.log("body dans le back =>", req.body.depart);
@@ -74,7 +78,26 @@ const Trip = require("../models/trips"); //import du modèle
 //-------------------------------//
 
 
+// router.post("/nom", (req, res) => {
+//   const reformatageNom = req.body.nom[0].toUpperCase() + req.body.nom.slice(1).toLowerCase();
+//   const reformatagePrenom = req.body.prenom[0].toUpperCase() + req.body.prenom.slice(1).toLowerCase();
 
+// res.json({ name: reformatageNom, firstName: reformatagePrenom });
+
+
+  // const city = weather.find(
+
+  //   (elem) => elem.cityName.toLowerCase() === req.params.cityName.toLowerCase()
+  // );
+  //console.log(city);
+
+
+//   if (city === undefined) {
+//     res.json({ result: false, error: "City not found" });
+//   } else {
+//     res.json({ result: true, weather: city });
+//   }
+//});
 
 
 
