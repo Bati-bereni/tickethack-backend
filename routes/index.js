@@ -6,11 +6,9 @@ const Trip = require("../models/trips"); //import du modèle
 // autant que de models/schemas
 
 //GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get("/", function (req, res, next) {
+  res.render("index", { title: "Express" });
 });
-
-
 
 router.get("/getAllTrips", (req, res) => {
   Trip.find().then((data) => {
@@ -18,13 +16,19 @@ router.get("/getAllTrips", (req, res) => {
   });
 });
 
+router.post("/tripSearch", (req, res) => {
+  const formatDepCity =
+    req.body.departure[0].toUpperCase() +
+    req.body.departure.slice(1).toLowerCase();
+  const formatArrCity =
+    req.body.arrival[0].toUpperCase() + req.body.arrival.slice(1).toLowerCase();
 
-
-router.post("/nom", (req, res) => {
-  const reformatageNom = req.body.nom[0].toUpperCase() + req.body.nom.slice(1).toLowerCase();
-  const reformatagePrenom = req.body.prenom[0].toUpperCase() + req.body.prenom.slice(1).toLowerCase();
-
-res.json({ name: reformatageNom, firstName: reformatagePrenom });
+  Trip.find({ departure: formatDepCity, arrival: formatArrCity }).then(
+    (data) => {
+      res.json({ allTrips: data })
+    }
+  );
+});
 
 // router.post("/getOneTrip", (req, res) => {
 //   // console.log("body dans le back =>", req.body.depart);
@@ -35,24 +39,6 @@ res.json({ name: reformatageNom, firstName: reformatagePrenom });
 //     }
 //   );
 // });
-
-
-// router.get("/maRoute", (req, res) => {
-
-//   res.json({message : "je suis dans ma route"})
-
-// })
-
-
-
-
-
-
-
-
-
-
-
 
 // getAllTrips();
 
@@ -77,20 +63,17 @@ res.json({ name: reformatageNom, firstName: reformatagePrenom });
 
 //-------------------------------//
 
-
 // router.post("/nom", (req, res) => {
 //   const reformatageNom = req.body.nom[0].toUpperCase() + req.body.nom.slice(1).toLowerCase();
 //   const reformatagePrenom = req.body.prenom[0].toUpperCase() + req.body.prenom.slice(1).toLowerCase();
 
 // res.json({ name: reformatageNom, firstName: reformatagePrenom });
 
+// const city = weather.find(
 
-  // const city = weather.find(
-
-  //   (elem) => elem.cityName.toLowerCase() === req.params.cityName.toLowerCase()
-  // );
-  //console.log(city);
-
+//   (elem) => elem.cityName.toLowerCase() === req.params.cityName.toLowerCase()
+// );
+//console.log(city);
 
 //   if (city === undefined) {
 //     res.json({ result: false, error: "City not found" });
@@ -98,12 +81,5 @@ res.json({ name: reformatageNom, firstName: reformatagePrenom });
 //     res.json({ result: true, weather: city });
 //   }
 //});
-
-
-
-
-
-
-
 
 module.exports = router;
