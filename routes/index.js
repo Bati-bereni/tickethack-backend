@@ -17,6 +17,10 @@ router.get("/getAllTrips", (req, res) => {
 });
 
 router.post("/tripSearch", (req, res) => {
+  if (!req.body.departure || !req.body.arrival) {
+    res.json({ result: false, error: "Missing or empty field" });
+  }
+
   const formatDepCity =
     req.body.departure[0].toUpperCase() +
     req.body.departure.slice(1).toLowerCase();
@@ -25,7 +29,7 @@ router.post("/tripSearch", (req, res) => {
 
   Trip.find({ departure: formatDepCity, arrival: formatArrCity }).then(
     (data) => {
-      res.json({ allTrips: data })
+      res.json({ result: true, allTrips: data });
     }
   );
 });
