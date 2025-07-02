@@ -3,6 +3,7 @@ var router = express.Router();
 
 require("../models/connection"); //import, initialisation connection
 const Trip = require("../models/trips"); //import du modèle
+const Cart = require("../models/carts");
 // autant que de models/schemas
 
 //GET home page. */
@@ -32,6 +33,39 @@ router.post("/tripSearch", (req, res) => {
       res.json({ result: true, allTrips: data });
     }
   );
+});
+
+router.post("/addToCart", (req, res) => {
+  // Récupérer la donnée intéréssante
+  console.log(req.body);
+
+  Trip.find({
+    departure: req.body.departure,
+    arrival: req.body.arrival,
+    date: new Date(req.body.date),
+    price: req.body.price,
+  }).then((data) => {
+    const NewCart = new Cart({
+      departure: req.body.departure,
+      arrival: req.body.arrival,
+      date: req.body.date,
+      price: req.body.price,
+    });
+
+    NewCart.save().then(() => {
+      Cart.find().then((data) => {
+        console.log("My new dataCart =>", data);
+        res.json({ result: true, message: "New cart properly saved" });
+      });
+    });
+
+    console.log("Mon Cart =>", NewCart);
+  });
+  // Chercher en base de donnée Trip, l'élément correspondant
+
+  // Enregistrer ce document trouvé, dans la collection Cart
+
+  // Renvoyer une réponse adéquat
 });
 
 // router.post("/getOneTrip", (req, res) => {
